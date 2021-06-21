@@ -178,11 +178,11 @@ function init_pagcripto_gateway_class()
                     <span style="color: #1e3464;">👉</span> <span><b> Link Copiado!</b></span>
                 </div>
 
-                <p>Link de Pagamento: </p>
-                <input type="text" id="txt" value="<?php echo $link; ?>">
+                <!-- <p>Link de Pagamento: </p> -->
+                <input type="hidden" id="txt" value="<?php echo $link; ?>">
 
-                <p>Texto QRCode: </p>
-                <input type="text" id="txt_qrcode" value="<?php echo $qrcode; ?>">
+                <!-- <p>Texto QRCode: </p> -->
+                <input type="hidden" id="txt_qrcode" value="<?php echo $qrcode; ?>">
                 <img style="margin: 10px 0 20px 0" src="<?php echo $qrcode; ?>" />
 
                 <div style="padding:6px 10px; background: #ccc;border-radius:6px;text-align: center;">
@@ -290,7 +290,7 @@ function init_pagcripto_gateway_class()
                 <input type="hidden" name="api_key" value="<?php echo htmlspecialchars($this->get_option('api_key')); ?>">
 
             </div>
-            <script>
+            <!-- <script>
                 jQuery(document).ready(function($) {
 
                     $('#select_coin').on('change', function() {
@@ -308,7 +308,7 @@ function init_pagcripto_gateway_class()
                         })
                     })
                 })
-            </script>
+            </script> -->
 
 <?php
         }
@@ -328,7 +328,7 @@ function init_pagcripto_gateway_class()
             $coin = get_post_meta($order->get_id(), 'select_coin', true);
             $amount = $woocommerce->cart->get_cart_contents_total();
 
-            $urlhook = str_replace('http', 'https', get_site_url());
+            $urlhook = str_replace('http://', 'https://', get_site_url());
 
             curl_setopt_array($curl, array(
                 CURLOPT_URL => 'https://api.pagcripto.com.br/v2/gateway/createPayment',
@@ -344,7 +344,6 @@ function init_pagcripto_gateway_class()
                     'amount' => $amount,
                     'description' => 'Pedido ' . $order_id,
                     'callback' =>  $urlhook . '/wc-api/' . $this->id
-                    // 'callback' =>  $urlhook . '/wc-api/' . $this->id . '/' . $order_id . '/?order_id=' . $order->get_id()
                 ),
                 CURLOPT_HTTPHEADER => array(
                     'X-Authentication: ' . $this->get_option('api_key')
